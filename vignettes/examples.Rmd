@@ -98,3 +98,4 @@ system.time(logistic(X,y))
 system.time(logistic(X1,y,add_intercept = F))
             
 ```
+We can see our function "logistic" is a bit slower than the original glm function.
