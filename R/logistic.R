@@ -15,29 +15,36 @@
 #' @return coefficients, standard errors, wald statistics, p-values, odds ratios and the fitted probabilities.
 #' also returns and optional predictions for a set of test data.
 #' @examples
-#' y = rbinom(100,size = 1,prob = 0.5) # see vignette for n != 1 example
-#' X = matrix(rnorm(1000,mean = 0, sd = 5),100,10)
+#' y = rbinom(100,size = 1,prob = 0.4) # see vignette for n != 1 example
+#' X = matrix(rnorm(1000,mean = 0, sd = 10),100,10)
 #' fit = logistic(X,y)
 #' odds_ratios = fit$or
 #'
 #' @export
 
-
 logistic = function(X,y,n = 1, i_max = 100, tol = 1e-4, to_predict = NULL, add_intercept = T){
 
-  if(is.null(dim(X))){ #one covariate.
+  if(is.null(dim(X))){ # a single vector as the design matrix - i.e one covariate.
+
     m = length(X)
-    } else {
-        m = dim(X)[1]
-    }
+
+  } else { # otherwise it is an actual matrix
+
+    m = dim(X)[1]
+
+  }
+
 
   if(add_intercept){ # add the row of ones needed for the intercept
-   X = cbind(rep(1,m),X)
-   }
 
-   if(all(n == 1) & any(y != 0 & y != 1)){ .
-     stop('Outcome Should be Binary')
-     }
+    X = cbind(rep(1,m),X)
+
+  }
+
+  if(all(n == 1) & any(y != 0 & y != 1)){ # need binary data if you are doing logistic regression ungrouped.
+
+    stop('Wrong type of data for your outcome')
+  }
 
   q = dim(X)[2]
 
@@ -51,7 +58,7 @@ logistic = function(X,y,n = 1, i_max = 100, tol = 1e-4, to_predict = NULL, add_i
   std_errs = NULL
   p_s = NULL
 
-  # IRWLS Algorithm #####
+# IRWLS Algorithm #####
 
   while(err > tol & i < i_max){
 
@@ -155,3 +162,5 @@ logistic = function(X,y,n = 1, i_max = 100, tol = 1e-4, to_predict = NULL, add_i
   return(r)
 
 }
+
+
