@@ -1,0 +1,100 @@
+---
+title: "Examples on how to use logistic"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Before we get started... load the package! 
+
+```{r setup}
+library(logistic)
+```
+# What is this package about? 
+
+This package provides you with a simple function **logistic**, which allows you to run a generalized linear model with the logit link function (meaning you are hopefully looking at binary outcomes). 
+
+
+## logistic 
+
+### Does it work? 
+
+Yes. 
+
+```{r}
+admit_data = read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
+y = admit_data$admit
+X =  admit_data$gre
+glm_model = glm(admit ~ gre, data = admit_data, family = 'binomial')
+logistic_fit = logistic(X,y)
+all.equal(as.vector(logistic_fit$coeffs),as.vector(glm_model$coefficients))
+all.equal(as.vector(logistic_fit$fitted),as.vector(glm_model$fitted.values))
+```
+
+The fitted values are slightly different, but very slightly and not enough to change predictive inference unless at the literal margin of 0.499 and 0.5. We can also do prediction as we did before using logistic.
+
+```{r}
+dim(admit_data)
+train = sample(1:400,200,replace = F)
+admit_data_train = admit_data[train,]
+admit_data_test = admit_data[-train,]
+y = admit_data_train$admit
+X = cbind(rep(1,dim(admit_data_train)[1]),
+          admit_data_train$gre, 
+          admit_data_train$gpa)
+glm_model = glm(admit ~ gre + gpa, data = admit_data_train, family = 'binomial')
+logistic_fit = logistic(X,y, to_predict = cbind(rep(1,dim(admit_data_test)[1]), 
+                                                admit_data_test$gre, 
+                                                admit_data_test$gpa), add_intercept = F)
+```
+
+This treats all vectors as row vectors, so say you have one covariate and 6 individuals you want to predict an outcome for. This prediction won't work and will throw an error if you pass them to the function with c(). You either need to add a column of ones, or to pass them individually and get individual predictions. This is also true for linear... see an example below! 
+
+```{r}
+y = admit_data$admit
+X =  admit_data$gre
+am_i_in = c(314,290,312,304)
+admitted = NULL
+for(i in 1:length(am_i_in)){
+  admitted[i] = logistic(X,y,to_predict = am_i_in[i])$predicted
+}
+am_i_in_w_intercept = cbind(1,am_i_in)
+admitted1 = logistic(X,y, to_predict = am_i_in_w_intercept)
+all.equal(as.vector(admitted), as.vector(admitted1$predicted))
+```
+
+This function will also work on data that is not just Bernoulli but binomial. Say we have a vector $Y$ of success and a vector $n$ of corresponding trials. So, an ordered pair could be something like (19,26) which means we observed 19 successes in 26 trials. This is possible in glm() - it is also possible with the logistic function. 
+
+```{r}
+data(mtcars)
+library(dplyr)
+mtcars$successes = sample(1:50, 32, replace = T)
+mtcars$total = with(mtcars, successes + sample(1:15, 32, replace = T))
+X = mtcars %>% select(wt,vs,am,successes,total)
+glm_fit_binomial = glm(cbind(successes, total - successes) ~ wt + vs + am, data = X, family = 'binomial')
+logistic_fit_binomial = logistic(cbind(rep(1,32), X$wt,X$vs,X$am), X$successes, n = X$total, add_intercept = F)
+all.equal(as.vector(glm_fit_binomial$coefficients),as.vector(logistic_fit_binomial$coeffs))
+```
+
+So we see that we can use this logistic function to fit any data that uses the logit link function (so when the outcome follows Bernoulli or binomial)
+
+### How does it compare to GLM? 
+
+```{r message = F, , fig.align ='center', fig.width= 5, fig.height = 5}
+X = matrix(sample(1:1000),100,10)
+y = rbinom(100,1,0.6)
+X1 = cbind(rep(1,100),X)
+system.time(glm(y ~ X, family = 'binomial'))
+system.time(logistic(X,y))
+system.time(logistic(X1,y,add_intercept = F))
+            
+```
