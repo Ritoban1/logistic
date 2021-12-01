@@ -41,8 +41,8 @@ also returns and optional predictions for a set of test data.
 Logistic Regression and Prediction
 }
 \examples{
-y = rbinom(100,size = 1,prob = 0.5) # see vignette for n != 1 example
-X = matrix(rnorm(1000,mean = 0, sd = 5),100,10)
+y = rbinom(100,size = 1,prob = 0.4) # see vignette for n != 1 example
+X = matrix(rnorm(1000,mean = 0, sd = 10),100,10)
 fit = logistic(X,y)
 odds_ratios = fit$or
 
