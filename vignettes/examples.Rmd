@@ -2,9 +2,9 @@
 title: "Examples on how to use logistic"
 output: rmarkdown::html_vignette
 vignette: >
+  %\VignetteEngine{knitr::knitr}
   %\VignetteIndexEntry{examples}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  %\usepackage[UTF-8]{inputenc}
 ---
 
 ```{r, include = FALSE}
@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 ## Before we get started... load the package! 
 
 ```{r setup}
+devtools::install_github('Ritoban1/logistic', build_vignettes = T)
 library(logistic)
 ```
 # What is this package about? 
