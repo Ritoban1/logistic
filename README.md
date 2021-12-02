@@ -1,7 +1,7 @@
 # logistic
 
 <!-- badges: start -->
-[![codecov](https://codecov.io/gh/Ritoban1/logistic/branch/main/graph/badge.svg?token=9JTYS4FR7V)](https://codecov.io/gh/Ritoban1/logistic)
+
 [![R-CMD-check](https://github.com/Ritoban1/logistic/workflows/R-CMD-check/badge.svg)](https://github.com/Ritoban1/logistic/actions)
 <!-- badges: end -->
 
