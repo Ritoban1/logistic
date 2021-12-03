@@ -57,7 +57,7 @@ logistic_fit = logistic(X,y, to_predict = cbind(rep(1,dim(admit_data_test)[1]),
                                                 admit_data_test$gpa), add_intercept = F)
 ```
 
-This treats all vectors as row vectors, so say you have one covariate and 6 individuals you want to predict an outcome for. This prediction won't work and will throw an error if you pass them to the function with c(). You either need to add a column of ones, or to pass them individually and get individual predictions. This is also true for linear... see an example below! 
+This treats all vectors as row vectors, so say you have one covariate and 6 individuals you want to predict an outcome for. This prediction won't work and will throw an error if you pass them to the function with c(). You either need to add a column of ones, or to pass them individually and get individual predictions.  
 
 ```{r}
 y = admit_data$admit
