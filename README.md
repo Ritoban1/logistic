@@ -75,5 +75,4 @@ browseVignettes(package = 'logistic')
 
 and click HTML to see more complex examples and how to use these functions in a more complete way.
 
-Have fun!!
-----------
+
