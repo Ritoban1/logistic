@@ -5,7 +5,7 @@
 [![R-CMD-check](https://github.com/Ritoban1/logistic/workflows/R-CMD-check/badge.svg)](https://github.com/Ritoban1/logistic/actions)
 <!-- badges: end -->
 
-The goal of some.models is to allow the user to use logistic regression in a beginner friendly way. In this package, we create a function with output that is limited to metrics that are important when beginning to learn about these regression techniques. Compared to glm, this function is easy to understand and interpret, and allow for easy, real-world, prediction capabilities. My hope for this package is for students, with knowledge of how to put data into these functions and formats, are able to better access and understand the functionalities of these methods.
+The goal of logistic is to allow the user to use logistic regression in a beginner friendly way. In this package, we create a function with output that is limited to metrics that are important when beginning to learn about these regression techniques. Compared to glm, this function is easy to understand and interpret, and allow for easy, real-world, prediction capabilities. My hope for this package is for students, with knowledge of how to put data into these functions and formats, are able to better access and understand the functionalities of these methods.
 
 Installation
 ------------
